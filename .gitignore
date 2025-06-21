@@ -1,0 +1,15 @@
+# IDE and editor files
+.vscode/     # Trailing slash is good practice for directories
+.DS_Store    # Matches anywhere in the repo
+
+# Docker-related storage and log files
+# Use a trailing slash for the directory itself if you want to ignore the whole directory recursively.
+# Using '*/' means "ignore this directory and everything inside it".
+# Your current '/*': "ignore all files directly inside".
+# For consistency and ensuring all contents are ignored even if new subdirectories are created:
+docker/storage/bigtalk_business_server/logs/
+docker/storage/bigtalk_core_proxy_server/logs/
+docker/storage/mariadb/data/
+docker/storage/mongodb/logs/
+docker/storage/mongodb/mongodb_storage/
+docker/develop_server_base/gcc-11.2.0.tar.gz

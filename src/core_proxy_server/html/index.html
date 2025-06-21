@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面设计中</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 36px;
+            color: #ff6347;
+        }
+        p {
+            font-size: 18px;
+            color: #555;
+            margin-top: 10px;
+        }
+        .loading {
+            font-size: 24px;
+            color: #ff6347;
+            margin-top: 20px;
+        }
+        .emoji {
+            font-size: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>页面正在设计中</h1>
+        <p>我们正在努力建设一个更好的体验，敬请期待！</p>
+        <div class="loading">
+            <span class="emoji">🚧</span>
+            <span>正在施工...</span>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript可以用来在页面加载后执行某些动态效果（例如，显示动画或倒计时等）
+        setTimeout(function() {
+            document.querySelector('.loading').innerHTML = '<span class="emoji">🔨</span> 页面正在构建，请稍候...';
+        }, 3000); // 3秒后修改文本
+    </script>
+
+</body>
+</html>

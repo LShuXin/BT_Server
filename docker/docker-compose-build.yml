@@ -1,0 +1,609 @@
+version: "3.8"
+
+services:
+
+  bigtalk_redis_server:
+    image: redis:2.8.19
+    restart: always
+    container_name: bigtalk_redis_server
+    hostname: bigtalk_redis_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.2
+    ports:
+      - 6379:6379
+    environment:
+      TZ: Asia/Shanghai
+      BIND: 0.0.0.0
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+
+  bigtalk_mariadb_server:
+    image: library/mariadb:10.7.1
+    restart: always
+    container_name: bigtalk_mariadb_server
+    hostname: bigtalk_mariadb_server
+    volumes:
+      - ./storage/mariadb/data:/var/lib/mysql
+      - ./storage/mariadb/conf/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.3
+    ports:
+      - 3306:3306
+    environment:
+      TZ: Asia/Shanghai
+      BIND: 0.0.0.0
+      MARIADB_ROOT_PASSWORD: bigtalk
+      MARIADB_DATABASE: bigtalk
+      MARIADB_USER: bigtalk
+      MARIADB_PASSWORD: bigtalk
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+
+  bigtalk_mongodb_server:
+    image: mongo:8.0.3-noble
+    restart: always
+    command: mongod --config /etc/mongod.conf --auth
+    container_name: bigtalk_mongodb_server
+    hostname: bigtalk_mongodb_server
+    volumes: 
+      - ./storage/mongodb/conf/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./storage/mongodb/conf/mongod.conf:/etc/mongod.conf
+      - ./storage/mongodb/mongodb_storage:/data/db
+      - ./storage/mongodb/logs:/var/log/mongodb
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.4
+    ports:
+      - 27017:27017
+    environment:
+      TZ: Asia/Shanghai
+      MONGO_INITDB_ROOT_USERNAME: bigtalk
+      MONGO_INITDB_ROOT_PASSWORD: bigtalk
+      MONGO_INITDB_DATABASE: bigtalk
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_auth_server:
+    image: bigtalk_auth_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/auth_server/Dockerfile
+    restart: always
+    container_name: bigtalk_auth_server
+    hostname: bigtalk_auth_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.5
+    ports:
+      - 3000:3000
+    environment:
+      TZ: Asia/Shanghai
+      BIND: 0.0.0.0
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_business_server:
+    image: bigtalk_business_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/business_server/Dockerfile
+    restart: always
+    container_name: bigtalk_business_server
+    hostname: bigtalk_business_server
+    volumes:
+      - ./storage/bigtalk_business_server/logs:/var/logs
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.6
+    ports:
+      - 3001:3001
+    environment:
+      TZ: Asia/Shanghai
+      BIND: 0.0.0.0
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_admin_server:
+    image: bigtalk_admin_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/admin_server/Dockerfile
+    restart: always
+    container_name: bigtalk_admin_server
+    hostname: bigtalk_admin_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.7
+    ports:
+      - 8090:80
+    environment:
+      TZ: Asia/Shanghai
+      BIND: 0.0.0.0
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_develop_server:
+    image: bigtalk_develop_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/develop_server/Dockerfile
+    restart: always
+    container_name: bigtalk_develop_server
+    hostname: bigtalk_develop_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.8
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+
+  bigtalk_msfs_server:
+    image: bigtalk_msfs_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/msfs_server/Dockerfile
+    restart: always
+    container_name: bigtalk_msfs_server
+    hostname: bigtalk_msfs_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.9
+    ports:
+      - 8700:8700
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_file_server:
+    image: bigtalk_file_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/file_server/Dockerfile
+    restart: always
+    container_name: bigtalk_file_server
+    hostname: bigtalk_file_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.10
+    ports:
+      - 8600:8600
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_db_proxy_server:
+    image: bigtalk_db_proxy_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/db_proxy_server/Dockerfile
+    restart: always
+    container_name: bigtalk_db_proxy_server
+    hostname: bigtalk_db_proxy_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.11
+    ports:
+      - 10600:10600
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_route_server:
+    image: bigtalk_route_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/route_server/Dockerfile
+    restart: always
+    container_name: bigtalk_route_server
+    hostname: bigtalk_route_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.12
+    ports:
+      - 8200:8200
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_login_server:
+    image: bigtalk_login_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/login_server/Dockerfile
+    restart: always
+    container_name: bigtalk_login_server
+    hostname: bigtalk_login_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.13
+    ports:
+      - 8080:8080
+      - 8008:8008
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_push_server:
+    image: bigtalk_push_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/push_server/Dockerfile
+    restart: always
+    container_name: bigtalk_push_server
+    hostname: bigtalk_push_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.14
+    ports:
+      - 8500:8500
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_msg_server:
+    image: bigtalk_msg_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/msg_server/Dockerfile
+    restart: always
+    container_name: bigtalk_msg_server
+    hostname: bigtalk_msg_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.15
+    ports:
+      - 8000:8000
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_http_msg_server:
+    image: bigtalk_http_msg_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/http_msg_server/Dockerfile
+    restart: always
+    container_name: bigtalk_http_msg_server
+    hostname: bigtalk_http_msg_server
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.16
+    ports:
+      - 8400:8400
+    environment:
+      TZ: Asia/Shanghai
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+
+  bigtalk_core_proxy_server:
+    image: bigtalk_core_proxy_server:0.0.1
+    build:
+      context: ../
+      dockerfile: docker/core_proxy_server/Dockerfile
+    restart: always
+    container_name: bigtalk_core_proxy_server
+    hostname: bigtalk_core_proxy_server
+    volumes:
+      - ./storage/bigtalk_core_proxy_server/logs:/var/log/nginx
+      - ./storage/bigtalk_core_proxy_server/html:/usr/share/nginx/html
+    networks:
+      bigtalk:
+        ipv4_address: 6.1.0.100
+    ports:
+      - 80:80
+      - 8081:8081
+    environment:
+      TZ: Asia/Shanghai
+      BIND: 0.0.0.0
+    extra_hosts:
+      - "bigtalk_redis_server:6.1.0.2"
+      - "bigtalk_mariadb_server:6.1.0.3"
+      - "bigtalk_mongodb_server:6.1.0.4"
+      - "bigtalk_auth_server:6.1.0.5"
+      - "bigtalk_business_server:6.1.0.6"
+      - "bigtalk_admin_server:6.1.0.7"
+      - "bigtalk_develop_server:6.1.0.8"
+      - "bigtalk_msfs_server:6.1.0.9"
+      - "bigtalk_file_server:6.1.0.10"
+      - "bigtalk_db_proxy_server:6.1.0.11"
+      - "bigtalk_route_server:6.1.0.12"
+      - "bigtalk_login_server:6.1.0.13"
+      - "bigtalk_push_server:6.1.0.14"
+      - "bigtalk_msg_server:6.1.0.15"
+      - "bigtalk_http_msg_server:6.1.0.16"
+      - "bigtalk_core_proxy_server:6.1.0.100"
+    depends_on:
+      - bigtalk_redis_server
+      - bigtalk_mariadb_server
+      - bigtalk_mongodb_server
+      - bigtalk_auth_server
+      - bigtalk_business_server
+      - bigtalk_admin_server
+      - bigtalk_develop_server
+      - bigtalk_msfs_server
+      - bigtalk_file_server
+      - bigtalk_db_proxy_server
+      - bigtalk_route_server
+      - bigtalk_login_server
+      - bigtalk_push_server
+      - bigtalk_msg_server
+      - bigtalk_http_msg_server
+
+networks:
+  bigtalk:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 6.1.0.0/16
+          gateway: 6.1.0.1

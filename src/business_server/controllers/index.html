@@ -1,0 +1,3 @@
+void applyPaint(EngineCanvas? oldCanvas) { if
+(picture.recordingCanvas!.renderStrategy.hasArbitraryPaint) {
+_applyBitmapPaint(oldCanvas); } else { _applyDomPaint(oldCanvas); } }

@@ -1,0 +1,10 @@
+.jsoneditor {
+  width: 500px;
+ 
+}
+textarea.jsoneditor-text {
+  min-height: 500px;
+}
+div.jsoneditor-tree {
+  min-height: 500px;
+}
