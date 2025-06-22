@@ -2,7 +2,7 @@
  * @Author: simon.liu.lsx@gmail.com
  * @Date: 2025-06-20 23:06:28
  * @LastEditors: simon.liu.lsx@gmail.com
- * @LastEditTime: 2025-06-21 17:58:19
+ * @LastEditTime: 2025-06-22 13:48:03
  * @FilePath: /BT_Server/doc/api.md
  * @Description: 
  * 
@@ -35,9 +35,8 @@ curl --location 'http://localhost/api/auth/register' \
 --header 'Content-Type: application/json' \
 --header 'Cookie: express:sess=eyJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpmYVdRaU9pSTJPREU0TnpZNE9UZ3laalV6WXpBd01XVTBaR05sWldFaUxDSnBZWFFpT2pFM05EWTBNek0yTnpNc0ltVjRjQ0k2TVRjME56WTBNekkzTTMwLnNMajJkN0xmM012Y1lqMWpRRnAzX2N3VVBYWUx0VkRMY3VjcDhlaWl0UjQifQ==; express:sess.sig=HWfN6H0-pbKQkrE8wMOWuZcw98w' \
 --data-raw '{
-    "firstName" : "Simon",
-    "lastName" : "Liu",
-    "email" : "simon.liu.lsx@gmil.com",
+    "name" : "bbbbb",
+    "email" : "simon.liu.lsxb@gmil.com",
     "password" : "Password@123",
     "confirmPassword" : "Password@123",
     "autoActivate": true
@@ -89,7 +88,7 @@ curl --location 'http://localhost/api/auth/login' \
 
 ```bash
 curl --location --request POST 'localhost:3000/api/auth/logout' \
---header 'auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTc1MDQzNjI3MiwiZXhwIjoxNzUxNjQ1ODcyfQ.6W6o1kmHDMHQEOWDMwpoEplPNz8mFZ-o5HhFKZgtkxY' \
+--header 'auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTc1MDU3MTExOSwiZXhwIjoxNzUxNzgwNzE5fQ.57pg8t55XAdwQ601ZdROpbs7SmZSIcO6uTOR2WcfHRU' \
 --header 'Authorization: Bearer oat_MTc.M0tUcEhuNEhZZmNqTmtZQ29TNFpNT2V1VzRJMEZSeGRVTTZCbldjQzI4MzI1ODMzMTQ'
 ```
 

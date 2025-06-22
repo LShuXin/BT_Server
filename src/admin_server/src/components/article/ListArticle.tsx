@@ -14,7 +14,7 @@ export const ListArticle = () => (
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="author" />
-            <TextField source="createdAt" />
+            <TextField source="created" />
         </Datagrid>
     </List>
 );

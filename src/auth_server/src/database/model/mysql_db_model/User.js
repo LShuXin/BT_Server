@@ -2,7 +2,7 @@
  * @Author: simon.liu.lsx@gmail.com
  * @Date: 2025-05-05 14:18:43
  * @LastEditors: simon.liu.lsx@gmail.com
- * @LastEditTime: 2025-06-21 00:31:11
+ * @LastEditTime: 2025-06-22 13:36:14
  * @FilePath: /BT_Server/src/auth_server/src/database/model/mysql_db_model/User.js
  * @Description: 
  * 
@@ -14,12 +14,8 @@ const { mSequelize } = require('../../connection/MySqlDbConnection')
 const User = mSequelize.define(
   'User',
   {
-    firstName: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    lastName: {
-      type: DataTypes.STRING(255),
+    name: {
+      type: DataTypes.STRING(32),
       allowNull: false,
     },
     email: {
@@ -39,11 +35,21 @@ const User = mSequelize.define(
       type: DataTypes.STRING,
       defaultValue: 'pending',
     },
+    created: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: () => Math.floor(Date.now() / 1000)
+    },
+    updated: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: () => Math.floor(Date.now() / 1000)
+    }
   }, 
   {
     tableName: 'IMUser',         // 👈 指定数据库表名
-    freezeTableName: true,       // 👈 禁用 Sequelize 自动复数化
-    timestamps: true,            // 👈 启用 createdAt 和 updatedAt
+    freezeTableName: true,       // 👈 禁用 Sequelize 自动复数化表名
+    timestamps: false            // 👈 启用自动添加 created 和 updated
   }
 );
 

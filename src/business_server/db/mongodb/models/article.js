@@ -1,7 +1,7 @@
 /*
- * @LastEditors: liushuxin admin@example.com
- * @LastEditTime: 2025-01-22 23:12:09
- * @FilePath: /server_new/src/business_server/db/mongodb/models/article.js
+ * @LastEditors: simon.liu.lsx@gmail.com
+ * @LastEditTime: 2025-06-22 13:26:42
+ * @FilePath: /BT_Server/src/business_server/db/mongodb/models/article.js
  * @Description: 
  * 
  * Copyright (c) 2025 by liushuxin@comeon.com All Rights Reserved. 
@@ -12,7 +12,7 @@ const ArticleSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   author: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  created: { type: Number, default: +new Date() },
 });
 
 module.exports = mongoose.model('Article', ArticleSchema);

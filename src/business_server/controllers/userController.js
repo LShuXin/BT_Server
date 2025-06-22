@@ -154,7 +154,7 @@ exports.updateUser = async (req, res) => {
         title: article['title'],
         author: article['author'],
         content: article['content'],
-        createdAt: article['createdAt'] 
+        created: article['created'] 
       }
     });
   } catch (error) {

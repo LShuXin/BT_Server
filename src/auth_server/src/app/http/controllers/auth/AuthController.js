@@ -15,8 +15,7 @@ const signTokenExpiry = {
 };
 
 const register = async (req, res, _next) => {
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
+  const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
   const autoActivate = req.body.autoActivate || false;
@@ -58,9 +57,8 @@ const register = async (req, res, _next) => {
     const hashedPassword = await authRepository.hashPassword(password);
 
     const payload = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
+      name,
+      email,
       password: hashedPassword,
     };
 
@@ -361,7 +359,7 @@ const passWordResetGetCode = async (req, res) => {
       './src/views/email/auth/passwordResetVerification.ejs'
     );
     const html = await ejs.renderFile(passwordResetEmailPath, {
-      username: user.firstName,
+      username: user.name,
       secretCode: secretCode,
     });
 

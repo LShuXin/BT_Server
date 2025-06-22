@@ -1,7 +1,7 @@
 /*
- * @LastEditors: liushuxin admin@example.com
- * @LastEditTime: 2025-05-05 16:20:23
- * @FilePath: /node-auth-service/node_auth_server/src/app/http/requests/RequestValidation.js
+ * @LastEditors: simon.liu.lsx@gmail.com
+ * @LastEditTime: 2025-06-22 13:38:07
+ * @FilePath: /BT_Server/src/auth_server/src/app/http/requests/RequestValidation.js
  * @Description: 
  * 
  * Copyright (c) 2024 by liushuxina@gmail.com All Rights Reserved. 
@@ -11,8 +11,7 @@ const Joi = require('joi');
 //Register Validation
 const registerValidation = (data) => {
   const registerSchema = Joi.object({
-    firstName: Joi.string().max(255).required(),
-    lastName: Joi.string().max(255).required(),
+    name: Joi.string().max(32).required(),
     email: Joi.string().min(6).required().email(),
     password: Joi.string()
       .min(6)

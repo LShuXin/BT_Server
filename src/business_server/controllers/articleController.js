@@ -36,7 +36,7 @@ exports.getArticles = async (req, res) => {
     const articles = await Article.find()
       .skip((page - 1) * limit)
       .limit(Number(limit))
-      .sort({ createdAt: -1 });
+      .sort({ created: -1 });
     const totalArticles = await Article.countDocuments();
     res.json({
       status: 'Success',
@@ -47,7 +47,7 @@ exports.getArticles = async (req, res) => {
           title: ele['title'],
           author: ele['author'],
           content: ele['content'],
-          createdAt: ele['createdAt'] 
+          created: ele['created'] 
         })),
         pagination: {
           total: totalArticles,
@@ -78,7 +78,7 @@ exports.getArticleById = async (req, res) => {
         title: article['title'],
         author: article['author'],
         content: article['content'],
-        createdAt: article['createdAt'] 
+        created: article['created'] 
       }
     });
   } catch (error) {
@@ -116,7 +116,7 @@ exports.updateArticle = async (req, res) => {
         title: article['title'],
         author: article['author'],
         content: article['content'],
-        createdAt: article['createdAt'] 
+        created: article['created'] 
       }
     });
   } catch (error) {
@@ -148,7 +148,7 @@ exports.deleteArticle = async (req, res) => {
         title: article['title'],
         author: article['author'],
         content: article['content'],
-        createdAt: article['createdAt'] 
+        created: article['created'] 
       },
       message: 'Article deleted successfully'
     });

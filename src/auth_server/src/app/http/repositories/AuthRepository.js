@@ -38,12 +38,11 @@ const extractUserFields = (user, isMySql) => {
     role: data.role,
     status: data.status,
     id: isMySql ? data.id : data._id,
-    firstName: data.firstName,
-    lastName: data.lastName,
+    name: data.name,
     email: data.email,
     password: data.password,
-    createdAt: data.createdAt,
-    updatedAt: data.updatedAt
+    created: data.created,
+    updated: data.updated
   };
 };
 

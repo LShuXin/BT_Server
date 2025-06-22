@@ -2,7 +2,7 @@
  * @Author: liushuxin admin@example.com
  * @Date: 2025-01-12 09:23:14
  * @LastEditors: simon.liu.lsx@gmail.com
- * @LastEditTime: 2025-06-21 00:31:41
+ * @LastEditTime: 2025-06-22 13:39:48
  * @FilePath: /BT_Server/src/auth_server/src/database/model/mongo_db_model/User.js
  * @Description: 
  * 
@@ -13,17 +13,11 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
-    firstName: {
+    name: {
       type: String,
       required: true,
       min: 6,
-      max: 255,
-    },
-    lastName: {
-      type: String,
-      required: true,
-      min: 6,
-      max: 255,
+      max: 32,
     },
     email: {
       type: String,

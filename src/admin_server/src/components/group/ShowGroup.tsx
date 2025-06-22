@@ -13,7 +13,7 @@ export const ShowArticle = () => (
         <SimpleShowLayout>
             <TextField source="title" />
             <TextField source="author" />
-            <TextField source="createdAt" />
+            <TextField source="created" />
             <TextField source="content" />
         </SimpleShowLayout>
     </Show>
